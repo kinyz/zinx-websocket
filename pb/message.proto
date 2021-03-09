@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package pb;
+
+
+
+// 通信包 前后端复用
+message Message{
+  uint64 MsgId = 1; // 通信id 调用kofa的msgId
+  bytes  Data =  2; // 数据包
+}
+
+
