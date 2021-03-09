@@ -2,10 +2,10 @@ package utils
 
 import (
 	"encoding/json"
+	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"log"
 	"os"
-
 	"zinx-websocket/ziface"
 )
 
@@ -95,6 +95,25 @@ func (g *GlobalObj) Reload() {
 	}
 }
 
+//读取用户的配置文件
+func (g *GlobalObj) ReloadYaml() {
+
+	if confFileExists, _ := PathExists(g.ConfFilePath); confFileExists != true {
+		//fmt.Println("Config File ", g.ConfFilePath , " is not exist!!")
+		return
+	}
+
+	yamlFile, err := ioutil.ReadFile(g.ConfFilePath)
+	if err != nil {
+		//log.Printf("yamlFile.Get err   #%v ", err)
+
+	}
+	err = yaml.Unmarshal(yamlFile, g)
+	if err != nil {
+		//log.Fatalf("Unmarshal: %v", err)
+	}
+}
+
 /*
 	提供init方法，默认加载
 */
@@ -112,7 +131,7 @@ func init() {
 		Host:             "0.0.0.0",
 		MaxConn:          12000,
 		MaxPacketSize:    4096,
-		ConfFilePath:     pwd + "/conf/zinx.json",
+		ConfFilePath:     "conf/websocket.yaml",
 		WorkerPoolSize:   10,
 		MaxWorkerTaskLen: 1024,
 		MaxMsgChanLen:    1024,
@@ -123,5 +142,5 @@ func init() {
 	}
 
 	//从配置文件中加载一些用户配置的参数
-	GlobalObject.Reload()
+	GlobalObject.ReloadYaml()
 }
