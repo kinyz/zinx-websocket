@@ -6,12 +6,9 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"strings"
-
 	"zinx-websocket/utils"
 	"zinx-websocket/ziface"
 )
-
 
 //Server 接口实现，定义一个Server服务类
 type Server struct {
@@ -50,6 +47,7 @@ func NewServer() ziface.IServer {
 	}
 	return s
 }
+
 //连接信息
 var upgrader = &websocket.Upgrader{
 	ReadBufferSize:  int(utils.GlobalObject.MaxPacketSize), //读取最大值
@@ -59,6 +57,7 @@ var upgrader = &websocket.Upgrader{
 		return true
 	},
 }
+
 //============== 实现 ziface.IServer 里的全部接口方法 ========
 
 //websocket回调
@@ -93,14 +92,13 @@ func (s *Server) wsHandler(w http.ResponseWriter, r *http.Request) {
 	//处理新连接业务方法
 	cid++
 
-
-	arrs := strings.Split(protocol, "dbgsaiudgiuwqghoiosdchnioaiwqisoaco")
-	log.Println("用户连接：", arrs[0], arrs[1])
-	dealConn := NewConntion(s, conn, cid, s.msgHandler)
+	dealConn := NewConntion(s, conn, cid, protocol, s.msgHandler)
 	go dealConn.Start()
 }
+
 //全局conectionid 后续使用uuid生成
 var cid uint32
+
 //Start 开启网络服务
 func (s *Server) Start() {
 	fmt.Printf("[START] Server name: %s,listenner at IP: %s, Port %d is starting\n", s.Name, s.IP, s.Port)
@@ -141,10 +139,12 @@ func (s *Server) Serve() {
 	//阻塞,否则主Go退出， listenner的go将会退出
 	select {}
 }
+
 //路由功能：给当前服务注册一个自定义头 找不到id时调用，供客户端链接处理使用
 func (s *Server) AddCustomHandle(handle ziface.IHandle) {
 	s.msgHandler.AddCustomHandle(handle)
 }
+
 //AddRouter 路由功能：给当前服务注册一个路由业务方法，供客户端链接处理使用
 func (s *Server) AddRouter(msgID uint64, router ziface.IRouter) {
 	s.msgHandler.AddRouter(msgID, router)

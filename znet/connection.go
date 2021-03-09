@@ -42,13 +42,14 @@ type Connection struct {
 	//当前连接的关闭状态
 	isClosed bool
 
+	protocol string
 
 	//消息类型 TextMessage 或 BinaryMessage之类
 	MessageType int `json:"messageType"`
 }
 
 //NewConntion 创建连接的方法
-func NewConntion(server ziface.IServer, conn *websocket.Conn, connID uint32, msgHandler ziface.IMsgHandle) *Connection {
+func NewConntion(server ziface.IServer, conn *websocket.Conn, connID uint32, protocol string, msgHandler ziface.IMsgHandle) *Connection {
 	//初始化Conn属性
 	c := &Connection{
 		TCPServer:   server,
@@ -59,6 +60,7 @@ func NewConntion(server ziface.IServer, conn *websocket.Conn, connID uint32, msg
 		msgChan:     make(chan []byte),
 		msgBuffChan: make(chan []byte, utils.GlobalObject.MaxMsgChanLen),
 		property:    nil,
+		protocol:    protocol,
 	}
 
 	//将新创建的Conn添加到链接管理中
@@ -119,8 +121,8 @@ func (c *Connection) StartReader() {
 			c.MessageType = messageType //以客户端的类型为准
 			msg := &pb.Message{}
 
-			if err := proto.Unmarshal(data, msg);err!=nil{
-				log.Print("unpack error:",err)
+			if err := proto.Unmarshal(data, msg); err != nil {
+				log.Print("unpack error:", err)
 				return
 			}
 
@@ -206,12 +208,12 @@ func (c *Connection) SendMsg(msgID uint64, data []byte) error {
 	if c.isClosed == true {
 		return errors.New("connection closed when send msg")
 	}
-	message:=&pb.Message{
+	message := &pb.Message{
 		MsgId: msgID,
 		Data:  data,
 	}
 	d, err := proto.Marshal(message)
-	if err!=nil{
+	if err != nil {
 		//log.Print("pack data error:",err)
 		return err
 	}
@@ -229,12 +231,12 @@ func (c *Connection) SendBuffMsg(msgID uint64, data []byte) error {
 	if c.isClosed == true {
 		return errors.New("connection closed when send msg")
 	}
-	message:=&pb.Message{
+	message := &pb.Message{
 		MsgId: msgID,
 		Data:  data,
 	}
 	d, err := proto.Marshal(message)
-	if err!=nil{
+	if err != nil {
 		//log.Print("pack data error:",err)
 		return err
 	}
@@ -279,4 +281,9 @@ func (c *Connection) RemoveProperty(key string) {
 //返回ctx，用于用户自定义的go程获取连接退出状态
 func (c *Connection) Context() context.Context {
 	return c.ctx
+}
+
+//获取Protocol子协议
+func (c *Connection) GetProtocol() string {
+	return c.protocol
 }

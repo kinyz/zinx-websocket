@@ -33,4 +33,5 @@ type IConnection interface {
 	//移除链接属性
 	RemoveProperty(key string)
 
+	GetProtocol() string
 }
