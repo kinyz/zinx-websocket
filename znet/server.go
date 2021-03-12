@@ -1,13 +1,13 @@
 package znet
 
 import (
-	"CardExpert/library/zinx-websocket/utils"
-	"CardExpert/library/zinx-websocket/ziface"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 	"strconv"
+	"zinx-websocket/utils"
+	"zinx-websocket/ziface"
 )
 
 //Server 接口实现，定义一个Server服务类

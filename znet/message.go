@@ -1,6 +1,6 @@
 package znet
 
-import "CardExpert/library/zinx-websocket/pb"
+import "zinx-websocket/pb"
 
 type Message struct {
 	Msg *pb.Message

@@ -1,6 +1,6 @@
 package znet
 
-import "CardExpert/library/zinx-websocket/ziface"
+import "zinx-websocket/ziface"
 
 type Request struct {
 	conn    ziface.IConnection //已经和客户端建立好的 链接

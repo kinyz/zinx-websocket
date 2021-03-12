@@ -5,7 +5,7 @@ import (
 	"log"
 	"sync"
 
-	"CardExpert/library/zinx-websocket/ziface"
+	"zinx-websocket/ziface"
 )
 
 //ConnManager 连接管理模块

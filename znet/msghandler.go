@@ -5,8 +5,8 @@ import (
 	"log"
 	"strconv"
 
-	"CardExpert/library/zinx-websocket/utils"
-	"CardExpert/library/zinx-websocket/ziface"
+	"zinx-websocket/utils"
+	"zinx-websocket/ziface"
 )
 
 // MsgHandle -
