@@ -47,7 +47,7 @@ func (mh *MsgHandle) DoMsgHandler(request ziface.IRequest) {
 		log.Printf("api msgID = ", request.GetMessage().GetMsgId(), " is not FOUND!")
 		//如果没有id的请求将会执行自定义协议头
 		if mh.CustomHandle != nil {
-			//fmt.Println("执行自定义头")
+			//log.Println("执行自定义头")
 			mh.CustomHandle.PreHandle(request)
 			mh.CustomHandle.PostHandle(request)
 			return
@@ -65,7 +65,7 @@ func (mh *MsgHandle) DoMsgHandler(request ziface.IRequest) {
 func (mh *MsgHandle) AddCustomHandle(handle ziface.IHandle) {
 
 	mh.CustomHandle = handle
-	fmt.Println("Socket Add CustomHandle ")
+	log.Println("Socket Add CustomHandle ")
 
 }
 

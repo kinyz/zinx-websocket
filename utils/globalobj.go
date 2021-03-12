@@ -18,9 +18,9 @@ type GlobalObj struct {
 		Server
 	*/
 	TCPServer ziface.IServer //当前Zinx的全局Server对象
-	Host      string         //当前服务器主机IP
-	TCPPort   int            //当前服务器主机监听端口号
-	Name      string         //当前服务器名称
+	Host      string         `yaml:"Host"`    //当前服务器主机IP
+	TCPPort   int            `yaml:"TcpPort"` //当前服务器主机监听端口号
+	Name      string         `yaml:"Name"`    //当前服务器名称
 
 	//类型 ws,wss
 	Scheme string
@@ -29,8 +29,8 @@ type GlobalObj struct {
 	*/
 	Version          string //当前Zinx版本号
 	MaxPacketSize    uint32 //都需数据包的最大值
-	MaxConn          int    //当前服务器主机允许的最大链接个数
-	WorkerPoolSize   uint32 //业务工作Worker池的数量
+	MaxConn          int    `yaml:"MaxConn"`        //当前服务器主机允许的最大链接个数
+	WorkerPoolSize   uint32 `yaml:"WorkerPoolSize"` //业务工作Worker池的数量
 	MaxWorkerTaskLen uint32 //业务工作Worker对应负责的任务队列最大任务存储数量
 	MaxMsgChanLen    uint32 //SendBuffMsg发送消息的缓冲最大长度
 
@@ -99,19 +99,21 @@ func (g *GlobalObj) Reload() {
 func (g *GlobalObj) ReloadYaml() {
 
 	if confFileExists, _ := PathExists(g.ConfFilePath); confFileExists != true {
-		//fmt.Println("Config File ", g.ConfFilePath , " is not exist!!")
+		log.Println("Config File ", g.ConfFilePath, " is not exist!!")
 		return
 	}
 
 	yamlFile, err := ioutil.ReadFile(g.ConfFilePath)
 	if err != nil {
-		//log.Printf("yamlFile.Get err   #%v ", err)
+		log.Printf("yamlFile.Get err   #%v ", err)
 
 	}
+
 	err = yaml.Unmarshal(yamlFile, g)
 	if err != nil {
-		//log.Fatalf("Unmarshal: %v", err)
+		log.Fatalf("Unmarshal: %v", err)
 	}
+	//log.Print(g.ConfFilePath)
 }
 
 /*
@@ -131,7 +133,7 @@ func init() {
 		Host:             "0.0.0.0",
 		MaxConn:          12000,
 		MaxPacketSize:    4096,
-		ConfFilePath:     "conf/websocket.yaml",
+		ConfFilePath:     "config/websocket.yaml",
 		WorkerPoolSize:   10,
 		MaxWorkerTaskLen: 1024,
 		MaxMsgChanLen:    1024,
@@ -143,4 +145,5 @@ func init() {
 
 	//从配置文件中加载一些用户配置的参数
 	GlobalObject.ReloadYaml()
+
 }
