@@ -3,15 +3,12 @@ package znet
 import (
 	"context"
 	"errors"
-
 	"github.com/golang/protobuf/proto"
+	"github.com/gorilla/websocket"
 	"log"
 	"net"
-	"zinx-websocket/pb"
-
 	"sync"
-
-	"github.com/gorilla/websocket"
+	"zinx-websocket/pb"
 	"zinx-websocket/utils"
 	"zinx-websocket/ziface"
 )

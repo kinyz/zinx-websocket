@@ -109,7 +109,7 @@ func (s *Server) Start() {
 		s.msgHandler.StartWorkerPool()
 
 		//已经监听成功
-		fmt.Println("start ", s.Name, " succ, now listenning...")
+		log.Println("start ", s.Name, " succ, now listenning...")
 
 		//TODO server.go 应该有一个自动生成ID的方法
 		//	var cid uint32

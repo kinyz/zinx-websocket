@@ -23,7 +23,7 @@ func NewMsgHandle() *MsgHandle {
 		Apis:           make(map[uint64]ziface.IRouter),
 		WorkerPoolSize: utils.GlobalObject.WorkerPoolSize,
 		//一个worker对应一个queue
-		TaskQueue: make([]chan ziface.IRequest, utils.GlobalObject.WorkerPoolSize),
+		TaskQueue:    make([]chan ziface.IRequest, utils.GlobalObject.WorkerPoolSize),
 		CustomHandle: nil,
 	}
 }
@@ -47,7 +47,7 @@ func (mh *MsgHandle) DoMsgHandler(request ziface.IRequest) {
 		log.Printf("api msgID = ", request.GetMessage().GetMsgId(), " is not FOUND!")
 		//如果没有id的请求将会执行自定义协议头
 		if mh.CustomHandle != nil {
-			//fmt.Println("执行自定义头")
+			//log.Println("执行自定义头")
 			mh.CustomHandle.PreHandle(request)
 			mh.CustomHandle.PostHandle(request)
 			return
@@ -60,13 +60,15 @@ func (mh *MsgHandle) DoMsgHandler(request ziface.IRequest) {
 	handler.Handle(request)
 	handler.PostHandle(request)
 }
+
 //添加一个自定义协议头 如果没有id的请求将会执行
 func (mh *MsgHandle) AddCustomHandle(handle ziface.IHandle) {
 
 	mh.CustomHandle = handle
-	fmt.Println("Socket Add CustomHandle ")
+	log.Println("Socket Add CustomHandle ")
 
 }
+
 //AddRouter 为消息添加具体的处理逻辑
 func (mh *MsgHandle) AddRouter(msgID uint64, router ziface.IRouter) {
 	//1 判断当前msg绑定的API处理方法是否已经存在

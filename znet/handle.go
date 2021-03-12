@@ -33,7 +33,7 @@ func (a *Handle) PreHandle(req ziface.IRequest) {
 		return
 	}
 
-	fmt.Println("Agreement PreHandle Not Fount")
+	log.Println("Agreement PreHandle Not Fount")
 
 }
 
@@ -44,6 +44,6 @@ func (a *Handle) PostHandle(req ziface.IRequest) {
 		return
 	}
 
-	fmt.Println("Agreement PostHandle Not Fount")
+	log.Println("Agreement PostHandle Not Fount")
 
 }
