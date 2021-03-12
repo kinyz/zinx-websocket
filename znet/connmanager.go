@@ -5,7 +5,7 @@ import (
 	"log"
 	"sync"
 
-	"zinx-websocket/ziface"
+	"CardExpert/library/zinx-websocket/ziface"
 )
 
 //ConnManager 连接管理模块
@@ -99,6 +99,7 @@ func (connMgr *ConnManager) ClearOneConn(connID uint32) {
 	log.Printf("Clear Connections ID:  ", connID, "err")
 	return
 }
+
 //获取所有连接
 func (connMgr *ConnManager) GetAllConn() map[uint32]ziface.IConnection {
 	return connMgr.connections

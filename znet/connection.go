@@ -4,16 +4,16 @@ import (
 	"context"
 	"errors"
 
+	"CardExpert/library/zinx-websocket/pb"
 	"github.com/golang/protobuf/proto"
 	"log"
 	"net"
-	"zinx-websocket/pb"
 
 	"sync"
 
+	"CardExpert/library/zinx-websocket/utils"
+	"CardExpert/library/zinx-websocket/ziface"
 	"github.com/gorilla/websocket"
-	"zinx-websocket/utils"
-	"zinx-websocket/ziface"
 )
 
 //Connection 链接

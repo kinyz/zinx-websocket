@@ -1,6 +1,6 @@
 package znet
 
-import "zinx-websocket/pb"
+import "CardExpert/library/zinx-websocket/pb"
 
 type Message struct {
 	Msg *pb.Message
@@ -18,7 +18,6 @@ func (m *Message) GetDataLen() uint32 {
 func (m *Message) SetData(data []byte) {
 	m.Msg.Data = data
 }
-
 
 func (m *Message) SetMsgId(msgId uint64) {
 	m.Msg.MsgId = msgId

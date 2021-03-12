@@ -5,8 +5,8 @@ import (
 	"log"
 	"strconv"
 
-	"zinx-websocket/utils"
-	"zinx-websocket/ziface"
+	"CardExpert/library/zinx-websocket/utils"
+	"CardExpert/library/zinx-websocket/ziface"
 )
 
 // MsgHandle -
@@ -23,7 +23,7 @@ func NewMsgHandle() *MsgHandle {
 		Apis:           make(map[uint64]ziface.IRouter),
 		WorkerPoolSize: utils.GlobalObject.WorkerPoolSize,
 		//一个worker对应一个queue
-		TaskQueue: make([]chan ziface.IRequest, utils.GlobalObject.WorkerPoolSize),
+		TaskQueue:    make([]chan ziface.IRequest, utils.GlobalObject.WorkerPoolSize),
 		CustomHandle: nil,
 	}
 }
@@ -60,6 +60,7 @@ func (mh *MsgHandle) DoMsgHandler(request ziface.IRequest) {
 	handler.Handle(request)
 	handler.PostHandle(request)
 }
+
 //添加一个自定义协议头 如果没有id的请求将会执行
 func (mh *MsgHandle) AddCustomHandle(handle ziface.IHandle) {
 
@@ -67,6 +68,7 @@ func (mh *MsgHandle) AddCustomHandle(handle ziface.IHandle) {
 	fmt.Println("Socket Add CustomHandle ")
 
 }
+
 //AddRouter 为消息添加具体的处理逻辑
 func (mh *MsgHandle) AddRouter(msgID uint64, router ziface.IRouter) {
 	//1 判断当前msg绑定的API处理方法是否已经存在
